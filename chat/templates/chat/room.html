@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Chat Room</title>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
 </head>
 <body>
-<textarea id="chat-log" cols="100" rows="20"></textarea><br>
-<input id="chat-message-input" type="text" size="100"><br>
+<label for="chat-log"></label><textarea id="chat-log" cols="100" rows="20"></textarea><br>
+<label for="chat-message-input"></label><input id="chat-message-input" type="text" size="100"><br>
 <input id="chat-message-submit" type="button" value="Send">
 {{ room_name|json_script:"room-name" }}
 <script>
   const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+  console.log(roomName)
 
   const chatSocket = new WebSocket(
     'ws://'
@@ -21,6 +23,7 @@
   );
 
   chatSocket.onmessage = function (e) {
+    console.log(e.data)
     const data = JSON.parse(e.data);
     document.querySelector('#chat-log').value += (data.message + '\n');
   };
